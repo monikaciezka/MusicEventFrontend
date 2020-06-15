@@ -1,22 +1,43 @@
+<br>
 <h2> List of events</h2>
 <div class="input-group mb-3">
   <input type="text" class="form-control" placeholder="Band Name" aria-label="Recipient's username" aria-describedby="button-addon2" #bandName>
   <div class="input-group-append">
     <button class="btn btn-outline-secondary" type="button" id="button-addon2" (click)="getBandConcerts(bandName.value); bandName.value = ''">Search</button>
   </div>
+  <div class="btn-group" role="group" aria-label="Basic example">
+
+    <button type="button" class="btn btn-secondary"(click)="list = sortEventsAsc()">A-Z</button>
+    <button type="button" class="btn btn-secondary" (click)="list = sortEventsDesc()">Z-A</button>
+  </div>
+
 </div>
+
 <ul class="list-group list-group-flush">
   <li class="list-group-item" *ngFor="let event of events">
     <div class="card">
       <div class="card-body">
+
+        <div *ngIf="token.getAuthorities().includes('ROLE_ADMIN')">
+        <button (click)="deleteEvent(event.id)" type="button" class="close" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+
         <h5 class="card-title">{{event.band}}</h5>
         <h6 class="card-subtitle mb-2 text-muted">Index: {{event.id}}</h6>
-        <p class="card-text">{{event.date}}</p>
+        <p class="card-text">Place: {{event.city}}</p>
+      <div class="row" *ngIf="token.getToken()">
         <nav>
-        <a routerLink= "/details/{{event.id}}" >See the details</a>
+          <a class="col-md-6" routerLink= "/details/{{event.id}}" >See the details</a>
         </nav>
+        <div class="button" style="align-content: end" *ngIf="token.getAuthorities().includes('ROLE_ADMIN')">
+          <nav>
+            <a class="col-md-6" routerLink= "/edit/{{event.id}}" >Edit</a>
+          </nav>
+        </div>
+      </div>
       </div>
     </div>
-
   </li>
 </ul>

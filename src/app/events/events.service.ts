@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {Event} from "../event";
-import {catchError} from "rxjs/operators";
+import {catchError, tap} from "rxjs/operators";
+import {Comment} from "../comments/comment";
 
 
 const httpOptions = {
@@ -23,8 +24,8 @@ export class EventsService {
   }
 
   /** GET events with specified band name*/
-  getBandConcerts(bandName: String): Observable<Event[]> {
-    const findUrl = `${this.url}/${bandName}`;
+  getBandConcerts(bandName: string): Observable<Event[]> {
+    const findUrl = `${this.url}/band`;
     return this.http.get<Event[]>(findUrl);
   }
 
@@ -38,10 +39,25 @@ export class EventsService {
   /** POST: add a new event to the server */
   addEvent(event: Event): Observable<Event> {
     const addUrl = `${this.url}/add`;
-    return this.http.post<Event>(addUrl, event, httpOptions).pipe(catchError(this.handleError<Event>('addEvent')));
+    return this.http.post<Event>(addUrl, event, httpOptions).pipe(tap((addEvent: Event) => this.log(`added event id=${event.id}`)), catchError(this.handleError<Event>('addEvent')));
+  }
+
+  deleteEvent(id: number): Observable<Event>{
+    const deleteUrl = `${this.url}/${id}`;
+    return this.http.delete<Event>(deleteUrl, httpOptions).pipe(catchError(this.handleError<Event>('deleteEvent')));
   }
 
 
+  addEventToFav(eventId: number, username: string): Observable<Event> {
+    const url = `http://localhost:8080/user/event/${eventId}`;
+    return this.http.post<Event>(url, username, httpOptions).pipe(tap((eventAddToFav: Event) => this.log(`added event id=${eventId}`)), catchError(this.handleError<Event>('addEventToFav')));
+  }
+
+
+  updateEvent(event: Event, eventId: number): Observable<Event> {
+    const patchUrl = `${this.url}/${eventId}`;
+    return this.http.patch<Event>(patchUrl, event, httpOptions).pipe(tap((eventAddToFav: Event) => this.log(`updated event id=${event.id}`)), catchError(this.handleError<Event>('updateEvent')));;
+  }
 
   /**
    * Handle Http operation that failed.
@@ -65,6 +81,6 @@ export class EventsService {
 
   /** Log a ContactService message with the MessageService */
   private log(message: string) {
-    console.log('ContactService: ' + message);
+    console.log('EventService: ' + message);
   }
 }

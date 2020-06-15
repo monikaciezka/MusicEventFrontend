@@ -1,1 +1,25 @@
-<p>user works!</p>
+<br>
+<h2>Hello {{user.name}}</h2>
+<h4>Your username is: {{user.username}}</h4>
+<br>
+<h3 *ngIf="user.eventList.length > 0">Events saved to favourites</h3>
+<ul class="list-group list-group-flush">
+  <li class="list-group-item" *ngFor="let event of user.eventList">
+    <div class="card">
+      <div class="card-body">
+        <div *ngIf="tokenStorage.getAuthorities().includes('ROLE_USER')">
+          <button (click)="removeEvent(event.id)" type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <h5 class="card-title">{{event.band}}</h5>
+        <h5 class="card-title">{{event.city}}</h5>
+        <nav>
+          <a class="col-md-6" routerLink= "/details/{{event.id}}" >See the details</a>
+        </nav>
+
+      </div>
+    </div>
+  </li>
+</ul>

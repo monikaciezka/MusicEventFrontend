@@ -1,8 +1,9 @@
 export class Event{
   id: number;
-  band: String;
-  date: String;
-  city: String;
-  description: String;
+  band: string;
+  date: string;
+  city: string;
+  description: string;
   price: number;
+
 }

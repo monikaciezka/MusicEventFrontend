@@ -1,11 +1,32 @@
-<h2>event details</h2>
-<button (click)="goBack()">go back</button>
-<!--
-<div class="card" style="width: 18rem;">
-  <div class="card-body">
-    <h5 class="card-title">{{event.band}}</h5>
-    <h6 class="card-subtitle mb-2 text-muted">Index: {{event.id}}</h6>
-    <p class="card-text">  </p>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<div class="jumbotron">
+
+  <div class="row">
+  <h1 class="display-4" style="text-align-all: center">{{event.band}}
+    <a class="col-md-2" style="text-align-all: end" *ngIf="!token.getAuthorities().includes('ROLE_ADMIN')" >
+    <button type="button" class="btn btn-outline-danger" (click)="addEventToFav()" style="text-align-last: center" aria-label="Close">
+      <i class="material-icons">favorite</i>
+    </button>
+    </a>
+  </h1>
+
+  </div>
+
+  <p class="lead">{{event.city}}</p>
+  <hr class="my-4">
+  <p>{{event.description}}</p>
+  <div *ngIf="token.getAuthorities().includes('ROLE_ADMIN')">
+  <nav>
+    <a class="col-md-6" routerLink= "/edit/{{event.id}}" >Edit</a>
+  </nav>
+  </div>
+  <div>
+  <button class="btn btn-primary btn-lg" (click)="goBack()" id="goBackButton">go back</button>
   </div>
 </div>
--->
+
+<div class="container">
+  <h3>Comments section</h3>
+<app-comments></app-comments>
+</div>

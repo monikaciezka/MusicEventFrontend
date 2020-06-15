@@ -10,6 +10,12 @@ import { EventsComponent } from './events/events.component';
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
 import { EventDetailsComponent } from './event-details/event-details.component';
+import { CommentsComponent } from './comments/comments.component';
+import {httpInterceptorProviders} from './auth/auth-interceptor';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { AdminComponent } from './admin/admin.component';
+import { EditEventComponent } from './edit-event/edit-event.component';
 
 
 @NgModule({
@@ -18,8 +24,13 @@ import { EventDetailsComponent } from './event-details/event-details.component';
     NavigationComponent,
     UserComponent,
     HomeComponent,
+    LoginComponent,
     EventsComponent,
-    EventDetailsComponent
+    EventDetailsComponent,
+    CommentsComponent,
+    RegisterComponent,
+    AdminComponent,
+    EditEventComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +38,7 @@ import { EventDetailsComponent } from './event-details/event-details.component';
     AppRoutingModule,
     FormsModule
   ],
-  providers: [],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
